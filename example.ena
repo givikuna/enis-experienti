@@ -1,3 +1,5 @@
+(autoimport)
+
 (t) ; true
 (f) ; false
 (nil) ; null
@@ -6,8 +8,85 @@
 (expt 2 7) ; 7^2
 ("Hello, World") ; "Hello, World"
 (:atom) ; 'atom'
-([:A to :Z])
-([1 to 10])
-([1 til 10])
+(list-to 4 1)
+(list-til 5 1)
+(list 1 2 3 4 5)
 
-(define n 10)
+(define n :: Number 10)
+
+(defvar n2 :: Number 10)
+
+(set! n2 12)
+
+(say lower :HEY)
+
+(if (or (= n2 10) (= n 10))
+    (say 'or'))
+
+(if (and (= n2 10) (= n 12))
+    (say 'and'))
+
+(if (xor (= n2 10) (= n2 12))
+    (say 'xor'))
+
+(SayHi :: -> Void)
+(define (SayHi)
+    (say :Hi))
+
+(SayHi())
+
+(SayHiTo :: String -> Void)
+(define (SayHiTo name)
+    (say f"Hi #{name}"))
+
+(SayHiTo 'Steve')
+
+(CoolerFunction :: String -> Void)
+(defun (CoolerFunction name)
+    (say f"Hi #{name} you're cool!"))
+
+(CurriedAddition :: Number Number --> Number)
+(define (CurriedAddition a b)
+    (+ a b))
+
+(Addition :: Number Number -> Number)
+(define (Addition a b) ; Not curried
+    (+ a b))
+
+(define DifferentCurriedAddition (curry$ Addition))
+
+(define value-from-lambda :: Number (lambda (:: -> Number)
+    (+ 10 12)))
+
+(define another-value-from-lambda :: Number (funcall (lambda (:: -> Number)
+    (if (> 1 2) (return 2)
+    elif (> 2 1) (return 4)
+    else (return 10)))))
+
+(define person :: JSON (hash#(
+    [Name . "Johnny"]
+    [Country . "USA"]
+    [Age . 20]
+)))
+
+(say hash-ref :Name person)
+
+(ReverseInteger :: Number -> Number)
+(defun (ReverseInteger n)
+    (n
+        |> str
+        |> chars
+        |> rev
+        |> join ''
+        |> remove :-
+        |> (* Math.sign n)))
+
+(define regex-example :: String ('haii'.replace /i/g ''))
+
+(define names :: List<String> (list :Jack :John :Jimmy))
+
+(define first-letters-of-names :: List<String>
+    (mapcar (lambda (name :: String -> String) (list-ref (chars name) 0)) names))
+
+(define last-letters-of-names :: List<String>
+    (mapcar (lambda (name :: String -> String) (list-ref (chars name) -1)) names))

@@ -90,8 +90,6 @@
         |> flatten
         |> some (el) -> (is) key, el or (~=) key, el)))
 
-(console.log equals-any 10 [1 to 20])
-
 (flat-freq = (arr, key) --> arr |> flatten |> freq-of key)
 
 (equals-any-in = (arr, key) --> equals-any key, arr)
@@ -194,7 +192,7 @@
     (return))
 
 (function defmacro name, func
-    (defun name, func)) 
+    (defun name, func))
 
 (lambda = (func) -> (...args) -> func ...args)
 

@@ -1,60 +1,290 @@
-(is-numeric = (xs) --> (/^[-+]?\d+(\.\d+)?$/.test xs))
+is-numeric = (xs) --> (/^[-+]?\d+(\.\d+)?$/.test xs)
 
-(mapcar = (func, xs) --> (xs.map func))
+mapcar = (f, xs) --> (xs.map f)
 
-(filter = (func, xs) --> (xs.filter func))
+filter = (f, xs) --> (xs.filter f)
 
-(head = (xs) --> xs[0])
+inc = (n) --> n + 1
 
-(tail = (xs) --> xs[(-) (xs.length) 1])
+dec = (n) --> n - 1
 
-(empty = (xs) --> xs.length is 0)
+head = (xs) --> xs[0]
 
-(reverse = (xs) --> xs.concat!reverse!)
+tail = (xs) --> xs[xs.length - 1]
 
-(uniq = (xs) -->
-    (res = [])
-    (for el in xs when x not in res then res.push el)
-    (res))
+empty = (xs) --> xs.length is 0
 
-(uniq-by = (f, xs) -->
-    (seen = [])
-    (for x in xs
-        (val = f x)
-        (continue if val in seen)
-        (seen.push val))
-    (x))
+uniq = (xs) --> [...(new Set xs)]
 
-(lower = (xs) --> xs.to-lower-case!)
+lower = (xs) --> xs.to-lower-case!
 
-(upper = (xs) --> xs.to-upper-case!)
+upper = (xs) --> xs.to-upper-case!
 
-(inc = (n) --> (+) 1 n)
+supertrim = (s) --> s.replace(/\r?\n|\r/g '')trim!
 
-(dec = (n) --> (-) (n) 1)
+freq = (k, xs) --> xs.filter((el) -> el is k)length
 
-(supertrim = (xs) --> s.replace /\r?\n|\r/g '' .trim!)
+freq-in = (xs, k) --> freq k, xs
 
-(freq = (k, xs) --> xs.filter((el) -> el is k)length)
+any = (f, xs) --> for x in xs when f x then true; false
 
-(freq-in = (xs, k) --> freq k, xs)
+all = (f, xs) --> for x in xs when not f x then false; true
 
-(any = (f, xs) --> for x in xs when f x then true; false)
+rev = (xs) --> if typeof xs is \string then xs.split('')reverse!join '' else xs.concat!reverse!
 
-(all = (f, xs) --> for x in xs when not f x then false; true)
+flatten = (xs) --> [(if typeof! xs is \Array then flatten xs else x) for x in xs]
 
-(is-any = (k, xs) --> any (is) 10)
+sum = (xs) --> xs.reduce ((acc, current) -> acc + current) 0
 
-(rev = (xs) --> if typeof xs is \string then xs.split '' .reverse! .join '' else xs.reverse!)
+product = (xs) --> xs.reduce ((acc, current) -> acc + current) 0
 
-(flatten = (xs) --> [(if typeof! xs is \Array then flatten xs else x) for x in xs])
+mean = (xs) --> (sum xs) / xs.length
 
-(sum = (xs) --> res = 0; for x in xs then res += x; res)
+maximum = (xs) --> xs.reduce (acc, current) -> if (>) acc, current then acc else current
 
-(product = (xs) --> res = 1; for x in xs then res *= x; res)
+minimum = (xs) --> xs.reduce (acc, current) -> if (<) acc, current then acc else current
 
-(mean = (xs) --> (/) (sum xs) xs.length)
+floor = Math.floor
 
-(max = (xs) --> res = xs[0]; for x in xs.slice 1 when (>) x, res then res = x; res)
+ceil = Math.ceil
 
-()
+each = (f, xs) --> for x in xs then f x; xs
+
+compact = (xs) --> [x for x in xs when f x]
+
+reject = (f, xs) --> xs.filter (x) -> not f x
+
+partition = (f, xs) --> [[x for x in xs when f x] [x for x in xs when not f x]]
+
+find = (f, xs) --> for x in xs when f x then return x; -1
+
+rest = (xs) --> xs.slice 1
+
+initial = (xs) --> xs.slice xs.length
+
+len = (.length)
+
+enumerate = (xs) --> xs.map (item, i) -> [i, item]
+
+append = (++)
+
+add$ = (+)
+
+minus$ = (-)
+
+multiply$ = (*)
+
+divide$ = (/)
+
+expt = (^)
+
+equals$ = (is)
+
+not-equals$ = (isnt)
+
+NOT$ = (not)
+
+OR = (...args) -> args.reduce ((acc, current) -> acc or current), false
+
+XOR = (...args) -> args.reduce ((acc, current) -> (a or b) and not (a and b)), false
+
+AND = (...args) -> args.reduce ((acc, current) -> acc and current), true
+
+more-than-operator$ = (>)
+
+less-than-operator$ = (<)
+
+more-than-or-equals-operator$ = (>=)
+
+less-than-or-equals-operator$ = (<=)
+
+modulus$ = (%%)
+
+mod$ = (%)
+
+member = (k, xs) --> xs.includes k or (((k2, xs2) -> if typeof! xs2 is \Array then k2 in xs2 else false)(k, xs))
+
+map2 = (f, xs1, xs2) --> xs1.map (x, i) -> f x, xs2[i]
+
+negate = (x) -> if (>) 0 x then x else -x
+
+abs = Math.abs
+
+list-ref = (i, xs) --> if n < 0 then xs[xs.length + n] else xs[n]
+
+chars = (s) --> s.split ''
+
+max = (x1, x2) --> if x1 > x2 then x1 else x2
+
+min = (x1, x2) --> if x1 > x2 then x2 else x1
+
+quot = (x, y) --> ~~(x / y)
+
+pi = Math.pi
+
+recip = (1 /)
+
+ln = Math.log
+
+sin = Math.sin
+
+cos = Math.cos
+
+tan = Math.tan
+
+csc = (1 /) >> Math.sin
+
+sec = (1 /) >> Math.cos
+
+cot = (1 / ) >> Math.tan
+
+truncate = (x) --> ~~x
+
+gcd = (x, y) -->
+    x = Math.abs x
+    y = Math.abs y
+    until y is 0
+        z = x % y
+        x = y
+        y = z
+    x
+
+lcm = (x, y) -->
+    Math.abs Math.floor (x / (((x2, y2) ->
+        x2 = Math.abs x2
+        y2 = Math.abs y2
+        until y2 is 0
+            z = x2 % y2
+            x2 = y2
+            y2 = z
+        x)(x, y)) * y)
+
+even = (x) --> x % 2 is 0
+
+odd = (x) --> x % 2 is 1
+
+index-of = (k, xs) --> xs.index-of k
+
+take = (n, xs) --> xs.slice 0 n
+
+drop = (n, xs) --> xs.slice n
+
+repeat = (n, s) -->
+    result = ''
+    for til n
+        result += s
+    result
+
+str = (s) -->
+    if s instanceof Array or Array.is-array s then return JSON.stringify s
+    if typeof s is \string then return s
+    if typeof s is \undefined or s is undefined then return \undefined
+    if typeof s is \null or s is null then return \null
+    if typeof s is boolean then if s then return \true else return \false
+    if isNaN s then return \NaN
+    if s instanceof Function then return s.to-string!
+    String s
+
+int = (s) --> if typeof s is \number then Math.floor s else int Number s
+
+title = (s) --> s.replace /\b\w/g (c) -> (c.to-upper-case)
+
+lazy = (f) ->
+    evaluated = no
+    result = null
+    (...args) ->
+        if not evaluated
+            result = func ...args
+            evaluated = yes
+        result
+
+throttle = (func, delay) ->
+    last-time = 0
+    (...args) ->
+        current-time = Date.now!
+        if (current-time - last-time) >= delay then do
+            func.apply this, args
+            last-time = current-time
+        return
+
+debounce = (func, delay) ->
+    timeout-id = null
+    (...args) ->
+        clear-timeout timeout-id
+        timeout-id = set-timeout do
+            -> func ...args
+            delay
+        return
+
+noop = -> null; return
+
+id = -> it
+
+before = (before-func, func) -->
+    (...args) ->
+        before-func!
+        func ...args
+
+after = (func, after-func) -->
+    (...args) ->
+        result = func ...args
+        after-func!
+        result
+
+say = console.log
+
+log = (base, x) --> (Math.log x) / (Math.log base)
+
+random = (min-val, max-val) -->
+    if min-val >= max-val
+        min-val
+    else
+        max-val
+            |> (- min-val)
+            |> (* Math.random!)
+            |> Math.floor
+            |> (+ min-val)
+
+sorted = (xs) -->
+    if xs.length <= 1 then return xs
+    mid = arr.length
+        |> (/ 2)
+        |> Math.floor
+    l = sorted arr.slice 0 mid
+    r = sorted arr.slice mid
+    ((l2, r2) ->
+        a = []
+        while l2.length and r2.length
+            if l2[0] < r2[0] then a.push l.shift!
+            else a.push r.shift!
+        [...a, ...l, ...r])(l, r)
+
+memoize = (f) ->
+    cache = {}
+    (...args) ->
+        if args[0] in cache then return cache[args[0]]
+        res = f args[0]
+        cache[n] = res
+        res
+
+tau = Math.pi * 2
+
+sqrt = Math.sqrt
+
+round = Math.round
+
+build-list = (n, f) --> [0 til n].map f
+
+hash-ref = (ref, hash) --> hash[ref]
+
+remove = (k, xs) --> if typeof xs is \string then xs.replace (new RegExp k, 'g'), '' else xs.filter (item) -> item isnt k
+
+join = (k, xs) --> xs.join k
+
+list = (...elements) -> elements
+
+list-to = (to_, from_) --> (new Array(Math.floor(from_) - Math.floor to_)).fill Math.floor(from_) .map (el, i) -> el + i
+
+list-til = (til_, from_) --> (new Array(Math.floor(from_) - 1 - Math.floor til_)).fill Math.floor(from_) .map (el, i) -> el + i
+
+funcall = (...args) -> if args.length < 2 then args[0]! else args.pop! ...args

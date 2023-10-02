@@ -28,9 +28,9 @@ freq-in = (xs, k) --> freq k, xs
 
 any = (f, xs) --> for x in xs when f x then true; false
 
-all = (f, xs) --> for x in xs when not f x then false; true
+all = (f, xs) --> xs.every f
 
-rev = (xs) --> if typeof xs is \string then xs.split('')reverse!join '' else xs.concat!reverse!
+rev = (xs) --> if typeof xs is \string then rev xs.split '' else xs.concat!reverse!
 
 flatten = (xs) --> [(if typeof! xs is \Array then flatten xs else x) for x in xs]
 
@@ -64,7 +64,7 @@ initial = (xs) --> xs.slice xs.length
 
 len = (.length)
 
-enumerate = (xs) --> xs.map (item, i) -> [i, item]
+enumerate = (xs) --> xs.entries!
 
 append = (++)
 
@@ -111,6 +111,8 @@ negate = (x) -> if (>) 0 x then x else -x
 abs = Math.abs
 
 list-ref = (i, xs) --> if n < 0 then xs[xs.length + n] else xs[n]
+
+at = (i, xs) --> if n < 0 then xs[xs.length + n] else xs[n]
 
 chars = (s) --> s.split ''
 
@@ -288,3 +290,51 @@ list-to = (to_, from_) --> (new Array(Math.floor(from_) - Math.floor to_)).fill 
 list-til = (til_, from_) --> (new Array(Math.floor(from_) - 1 - Math.floor til_)).fill Math.floor(from_) .map (el, i) -> el + i
 
 funcall = (...args) -> if args.length < 2 then args[0]! else args.pop! ...args
+
+find = (f, xs) --> xs.find f
+
+fill = (val, xs) --> xs.map((el) -> val)
+
+flat-map = (f, xs) --> xs.flat-map f
+
+fold = (f, init, xs) --> xs.reduce f, init
+
+fold1 = (f, xs) --> xs.reduce f, 1
+
+foldr = (f, memo, xs) --> for x in xs by -1 then memo = f x, memo; memo
+
+foldr1 = (f, xs) --> (() -> for x in xs by -1 then memo = f x, memo; memo) f, xs[*-1], xs.slice 0 -1
+
+unfoldr = (f, b) -->
+    res = []
+    x = b
+    while (f x)?
+        res.push that.0
+        x = that.1
+    res
+
+and-list = (xs) --> xs.every Boolean
+
+or-list = (xs) --> (xs.map (x) -> Boolean x).includes true
+
+scan = (f, memo, xs) --> last = memo; [memo] ++ [last = f last, x for x in xs]
+
+scan1 = (f, xs) --> return void unless xs.length; ((f2, memo2, xs2) --> last = memo2; [memo2] ++ [last = f2, last, x for x in xs2]) f, xs.0, xs.slice 1
+
+scanr = (f, memo, xs) --> (((f2, memo2, xs2) --> last = memo2; [memo2] ++ [last = f2 last, x for x in xs]) f, memo, xs.concat!reverse!).reverse!
+
+scanr1 = (f, xs) --> return void unless xs.length; (((f2, memo2, xs2) --> last = memo2; [memo2] ++ [last = f2 last, x for x in xs]) f, xs.0, xs.slice 1).reverse!
+
+zip = (xs, ys) --> xs.map (x, i) -> [x, ys[i]]
+
+find-index = (f, xs) --> if xs.find f then x.find f else -1
+
+find-indices = (f, xs) --> (xs.entries!filter (x) -> f x[1]).map (x) -> x[0]
+
+elem-indices = (el, xs) --> (xs.entries!filter (x) -> (is) x[1], el).map (x) -> x[0]
+
+take-while = (f, xs) --> xs.filter (x) -> f x
+
+drop-while = (f, xs) --> fs.filter (x) -> not f x
+
+capitalize = (xs) --> xs.char-at 0 .to-upper-case! + str.slice 1

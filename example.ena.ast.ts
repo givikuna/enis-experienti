@@ -515,8 +515,16 @@ export const ast = [
     {
         statement: "function-call",
         info: {
-            functionBeingCalled: "SayHi",
-            arguments: []
+            functionBeingCalled: "funcall",
+            arguments: [
+                {
+                    statement: "just-a-value",
+                    info: {
+                        value: "SayHiTo",
+                        type: "Function"
+                    }
+                }
+            ],
         }
     },
     {
@@ -567,6 +575,28 @@ export const ast = [
                         value: "\'Steve\'",
                         type: "String",
                     }
+                }
+            ]
+        }
+    },
+    {
+        statement: "function-call",
+        info: {
+            functionBeingCalled: "funcall",
+            arguments: [
+                {
+                    statement: "just-a-value",
+                    info: {
+                        value: "SayHiTo",
+                        type: "Function",
+                    }
+                },
+                {
+                    statement: "just-a-value",
+                    info: {
+                        value: "\'Steve\'",
+                        type: "String",
+                    },
                 }
             ]
         }
@@ -742,82 +772,23 @@ export const ast = [
                                 },
                                 lambdaBody: [
                                     {
-                                        statement: "if-statement",
+                                        statement: "funtion-call",
                                         info: {
-                                            conditions: [
+                                            functionBeingCalled: "+",
+                                            arguments: [
                                                 {
-                                                    statement: "function-call",
+                                                    statement: "just-a-value",
                                                     info: {
-                                                        functionBeingCalled: ">",
-                                                        arguments: [
-                                                            "1",
-                                                            "2"
-                                                        ]
+                                                        value: "10",
+                                                        type: "Number"
                                                     }
-                                                }
-                                            ],
-                                            ifTrue: [
+                                                },
                                                 {
-                                                    statement: "return-statement",
+                                                    statement: "just-a-value",
                                                     info: {
-                                                        infoBeingReturned: {
-                                                            statement: "just-a-value",
-                                                            info: {
-                                                                value: "2",
-                                                                type: "Number"
-                                                            }
-                                                        }
+                                                        value: "12",
+                                                        type: "Number"
                                                     }
-                                                }
-                                            ],
-                                            elifs: [
-                                                {
-                                                    statement: "elif-statement",
-                                                    conditions: [
-                                                        {
-                                                            statement: "function-call",
-                                                            info: {
-                                                                functionBeingCalled: ">",
-                                                                arguments: [
-                                                                    "2",
-                                                                    "1"
-                                                                ]
-                                                            }
-                                                        }
-                                                    ],
-                                                    ifTrue: [
-                                                        {
-                                                            statement: "return-statement",
-                                                            info: {
-                                                                infoBeingReturned: {
-                                                                    statement: "just-a-value",
-                                                                    info: {
-                                                                        value: "4",
-                                                                        type: "Number"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            ],
-                                            else: [
-                                                {
-                                                    statement: "else-statement",
-                                                    ifTrue: [
-                                                        {
-                                                            statement: "return-statement",
-                                                            info: {
-                                                                infoBeingReturned: {
-                                                                    statement: "just-a-value",
-                                                                    info: {
-                                                                        value: "10",
-                                                                        type: "Number"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
                                                 }
                                             ]
                                         }
@@ -828,7 +799,131 @@ export const ast = [
                     ]
                 }
             }
-        },
+        }
+    },
+    {
+        statement: "define",
+        info: {
+            variableName: "another-value-from-lambda",
+            variableType: "Number",
+            variableValue: {
+                statement: "function-call",
+                info: {
+                    functionBeingCalled: "funcall",
+                    arguments: [
+                        {
+                            statement: "lambda",
+                            info: {
+                                lambdaSignature: {
+                                    inputTypes: [],
+                                    functionParameters: [],
+                                    returnType: "Number",
+                                },
+                                lambdaBody: [
+                                    {
+                                        statement: "cond",
+                                        info: {
+                                            conditions: [
+                                                {
+                                                    condition: [
+                                                        {
+                                                            statement: "function-call",
+                                                            info: {
+                                                                functionBeingCalled: ">",
+                                                                arguments: [
+                                                                    {
+                                                                        statement: "just-a-value",
+                                                                        info: {
+                                                                            value: "1",
+                                                                            type: "Number"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        statement: "just-a-value",
+                                                                        info: {
+                                                                            value: "2",
+                                                                            type: "Number"
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    return: [
+                                                        {
+                                                            statement: "just-a-value",
+                                                            info: {
+                                                                value: "2",
+                                                                type: "Number"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    condition: [
+                                                        {
+                                                            statement: "function-call",
+                                                            info: {
+                                                                functionBeingCalled: ">",
+                                                                arguments: [
+                                                                    {
+                                                                        statement: "just-a-value",
+                                                                        info: {
+                                                                            value: "2",
+                                                                            type: "Number"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        statement: "just-a-value",
+                                                                        info: {
+                                                                            value: "1",
+                                                                            type: "Number"
+                                                                        }
+                                                                    },
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    return: [
+                                                        {
+                                                            statement: "just-a-value",
+                                                            info: {
+                                                                value: "4",
+                                                                type: "Number"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    condition: [
+                                                        {
+                                                            statement: "just-a-value",
+                                                            info: {
+                                                                value: ":else",
+                                                                type: "String"
+                                                            }
+                                                        }
+                                                    ],
+                                                    return: [
+                                                        {
+                                                            statement: "just-a-value",
+                                                            info: {
+                                                                value: "10",
+                                                                type: "Number"
+                                                            },
+                                                        }
+                                                    ],
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
     },
     {
         statement: "define",

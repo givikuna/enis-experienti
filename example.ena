@@ -1,4 +1,4 @@
-(autoimport)
+(autoimport coreutils, std)
 
 (t) ; true
 (f) ; false
@@ -33,17 +33,19 @@
 (define (SayHi)
     (say :Hi))
 
-(SayHi())
+(funcall SayHi)
 
 (SayHiTo :: String -> Void)
 (define (SayHiTo name)
-    (say f"Hi #{name}"))
+    (say f"Hi ${name}"))
 
 (SayHiTo 'Steve')
 
+(funcall (SayHiTo) 'Steve')
+
 (CoolerFunction :: String -> Void)
 (defun (CoolerFunction name)
-    (say f"Hi #{name} you're cool!"))
+    (say f"Hi ${name} you're cool!"))
 
 (CurriedAddition :: Number Number --> Number)
 (define (CurriedAddition a b)
@@ -53,40 +55,37 @@
 (define (Addition a b) ; Not curried
     (+ a b))
 
-(define DifferentCurriedAddition (curry$ Addition))
+(define DifferentCurriedAddition :: Function (curry$ Addition))
 
-(define value-from-lambda :: Number (lambda (:: -> Number)
-    (+ 10 12)))
+(define value-from-lambda :: Number (funcall (lambda (:: -> Number)
+    (+ 10 12))))
 
 (define another-value-from-lambda :: Number (funcall (lambda (:: -> Number)
-    (if (> 1 2) (return 2)
-    elif (> 2 1) (return 4)
-    else (return 10)))))
+    (cond ([(> 1 2) (2)] [(> 2 1) (4)] [(:else) (10)])))))
 
 (define person :: JSON (hash#(
     [Name . "Johnny"]
     [Country . "USA"]
-    [Age . 20]
-)))
+    [Age . 20])))
 
 (say hash-ref :Name person)
 
 (ReverseInteger :: Number -> Number)
 (defun (ReverseInteger n)
-    (n
-        |> str
-        |> chars
-        |> rev
-        |> join ''
-        |> remove :-
-        |> (* Math.sign n)))
+    ((pipe n
+        (str)
+        (chars)
+        (rev)
+        (join '')
+        (remvoe :-)
+        (*  Math.sign n))))
 
 (define regex-example :: String ('haii'.replace /i/g ''))
 
 (define names :: List<String> (list :Jack :John :Jimmy))
 
 (define first-letters-of-names :: List<String>
-    (mapcar (lambda (name :: String -> String) (list-ref (chars name) 0)) names))
+    (mapcar (funcall (lambda (name :: String -> String) (list-ref (chars name) 0)) names)))
 
 (define last-letters-of-names :: List<String>
-    (mapcar (lambda (name :: String -> String) (list-ref (chars name) -1)) names))
+    (mapcar (funcall (lambda (name :: String -> String) (list-ref (chars name) -1)) names)))
